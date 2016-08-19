@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>That's What Yvonne Said</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://fb.me/react-0.14.7.min.js"></script>
+    <script src="https://fb.me/react-dom-0.14.7.min.js"></script>
+    <script src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+</head>
+
+<body>
+    <div class="container text-center">
+        <h1>That's What Yvonne Said</h1>
+        <div id="react"></div>
+    </div>
+</body>
+
+<script>
+    function httpGet(theUrl, cb) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.send(null);
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                cb(JSON.parse(xmlHttp.responseText));
+            }
+        };
+    }
+    var site = React.createClass({
+        componentDidMount: function() {
+            httpGet("https://spreadsheets.google.com/feeds/list/19ibKMYftvJ33Rr45FL_4QrHVbMIjRdmZW2eT1bBHLnA/od6/public/values?alt=json", function(data) {
+                console.log(data);
+                this.setState({
+                    data: data,
+                });
+            }.bind(this));
+        },
+        render: function() {
+            var content = [
+    React.createElement('img', {
+                    className: "img-rounded profile",
+                    src: "https://graph.facebook.com/1417572343/picture?type=large"
+                })
+                ];
+            console.log(this.state);
+            if (this.state) {
+                this.state.data.feed.entry.reverse();
+                this.state.data.feed.entry.forEach(function(e) {
+                    //quote, context, date
+                    content.push(React.createElement('blockquote', {}, [React.createElement('p', {}, e.gsx$quote.$t), React.createElement('footer', {}, e.gsx$context.$t + " - " + moment(e.gsx$date.$t).format("D MMMM YYYY"))]))
+                    console.log(e);
+                })
+            }
+            return (React.createElement('div', {
+                className: "row"
+            }, React.createElement('div', {
+                className: "col-md-12"
+            }, content)));
+        }
+    });
+    ReactDOM.render(React.createElement(site), document.getElementById('react'));
+</script>
+
+</html>
