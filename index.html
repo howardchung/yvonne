@@ -31,7 +31,7 @@
     }
     var site = React.createClass({
         componentDidMount: function() {
-            httpGet("https://spreadsheets.google.com/feeds/list/19ibKMYftvJ33Rr45FL_4QrHVbMIjRdmZW2eT1bBHLnA/od6/public/values?alt=json", function(data) {
+            httpGet("https://sheets.googleapis.com/v4/spreadsheets/19ibKMYftvJ33Rr45FL_4QrHVbMIjRdmZW2eT1bBHLnA/values/Sheet1?key=AIzaSyDAHivgQUlxM9FKaTYuzfKpOKgf0f9hpXI", function(data) {
                 console.log(data);
                 this.setState({
                     data: data,
@@ -42,15 +42,16 @@
             var content = [
     React.createElement('img', {
                     className: "img-rounded profile",
-                    src: "https://graph.facebook.com/1417572343/picture?type=large"
+                    src: "./1974033_10203750507149313_805584848_o.jpg"
                 })
                 ];
             console.log(this.state);
             if (this.state) {
-                this.state.data.feed.entry.reverse();
-                this.state.data.feed.entry.forEach(function(e) {
+                this.state.data.values.shift();
+                this.state.data.values.reverse();
+                this.state.data.values.forEach(function(e) {
                     //quote, context, date
-                    content.push(React.createElement('blockquote', {}, [React.createElement('p', {}, e.gsx$quote.$t), React.createElement('footer', {}, e.gsx$context.$t + " - " + moment(e.gsx$date.$t).format("D MMMM YYYY"))]))
+                    content.push(React.createElement('blockquote', {}, [React.createElement('p', {}, e[0]), React.createElement('footer', {}, e[1] + " - " + moment(e[2]).format("D MMMM YYYY"))]))
                     console.log(e);
                 })
             }
