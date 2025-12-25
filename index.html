@@ -31,7 +31,7 @@
     }
     var site = React.createClass({
         componentDidMount: function() {
-            httpGet("https://sheets.googleapis.com/v4/spreadsheets/19ibKMYftvJ33Rr45FL_4QrHVbMIjRdmZW2eT1bBHLnA/values/Sheet1?key=AIzaSyDAHivgQUlxM9FKaTYuzfKpOKgf0f9hpXI", function(data) {
+            httpGet("https://googlesheet.howardzchung.workers.dev?url=https://sheets.googleapis.com/v4/spreadsheets/19ibKMYftvJ33Rr45FL_4QrHVbMIjRdmZW2eT1bBHLnA/values/Sheet1", function(data) {
                 console.log(data);
                 this.setState({
                     data: data,
